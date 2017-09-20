@@ -37,16 +37,16 @@ class ConsoleKernel extends Kernel
         //如果没有参数，说明没有任何命令可执行，显示所有命令
         if (count($arguments) === 0) {
             $output->writeln("Command list:");
-            foreach ($this->get("commandPool")->all() as $k => $v) {
+            foreach ($this->di->get("commandPool")->all() as $k => $v) {
                 $output->writeln("<comment>$k</comment>\t" . $v->getDescription());
             }
         } else {
             //第一个参数为命令名称
             $commandName = array_shift($arguments);
-            if (!$this->get("commandPool")->has($commandName)) {
+            if (!$this->di->get("commandPool")->has($commandName)) {
                 $output->writeln("<error>command: " . $commandName . " not exist</error>");
             } else {
-                $command = $this->get("commandPool")->get($commandName);
+                $command = $this->di->get("commandPool")->get($commandName);
                 array_unshift($arguments, $commandName);
                 $commandInput = new ArgvInput($arguments);
                 $command->run($commandInput);
