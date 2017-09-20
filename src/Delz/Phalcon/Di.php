@@ -87,7 +87,7 @@ class Di extends BaseDi
             $listeners = explode(",", $listenerParameters);
             foreach ($listeners as $listener) {
 
-                //第一个参数是服务名称，第二个参数是方法名，第三个参数是权重，没有默认是100，第三个是否stop，默认是false
+                //第一个参数是服务名称，第二个参数是方法名，第三个参数是权重，没有默认是100
                 $listenerParameters = explode(":", $listener);
 
                 if(!isset($listenerParameters[1])) {
