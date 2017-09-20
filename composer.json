@@ -12,7 +12,8 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=7.0.0",
-        "delz/config": "dev-master"
+        "delz/config": "dev-master",
+        "delz/paginator": "dev-master"
     },
     "autoload": {
         "psr-4": {
