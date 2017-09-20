@@ -76,12 +76,22 @@ abstract class Kernel implements IKernel
     protected $kernelFilePath;
 
     /**
+     * 支持的环境
+     */
+    const ENVIRONMENTS = ['prod', 'dev'];
+
+    /**
      * @param string $environment
      * @param bool $debug 是否开启debug
      */
     public function __construct($environment, $debug)
     {
         $this->environment = strtolower($environment);
+
+        if(!in_array($this->environment, self::ENVIRONMENTS)) {
+            throw new \RuntimeException('invalid environment. "prod" and "dev" is supported.');
+        }
+
         $this->debug = (bool)$debug;
 
         if ($this->debug) {
@@ -110,6 +120,14 @@ abstract class Kernel implements IKernel
     public function getAppId()
     {
         return $this->appId;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDi()
+    {
+        return $this->di;
     }
 
     /**

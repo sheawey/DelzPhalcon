@@ -64,14 +64,6 @@ class HttpKernel extends Kernel
     /**
      * {@inheritdoc}
      */
-    public function getDi()
-    {
-        return $this->di;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function handle()
     {
         $response = $this->getApplication()->handle();

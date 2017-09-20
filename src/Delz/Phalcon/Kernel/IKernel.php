@@ -2,9 +2,6 @@
 
 namespace Delz\Phalcon\Kernel;
 
-use Phalcon\Http\ResponseInterface;
-use Phalcon\Mvc\Application;
-use Phalcon\Mvc\Micro;
 use Phalcon\DiInterface;
 
 /**
@@ -15,13 +12,6 @@ use Phalcon\DiInterface;
 interface IKernel
 {
     /**
-     * 获取应用
-     *
-     * @return Application|Micro
-     */
-    public function getApplication();
-
-    /**
      * 获取容器
      *
      * @return DiInterface
@@ -29,8 +19,8 @@ interface IKernel
     public function getDi();
 
     /**
-     * 处理应用，返回response
-     * @return ResponseInterface
+     * 处理应用
+     * @return mixed
      */
     public function handle();
 
