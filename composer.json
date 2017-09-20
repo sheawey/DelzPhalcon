@@ -13,7 +13,8 @@
     "require": {
         "php": ">=7.0.0",
         "delz/config": "dev-master",
-        "delz/paginator": "dev-master"
+        "delz/paginator": "dev-master",
+        "delz/console": "dev-master"
     },
     "autoload": {
         "psr-4": {
