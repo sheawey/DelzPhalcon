@@ -88,7 +88,7 @@ abstract class Kernel implements IKernel
     {
         $this->environment = strtolower($environment);
 
-        if(!in_array($this->environment, self::ENVIRONMENTS)) {
+        if (!in_array($this->environment, self::ENVIRONMENTS)) {
             throw new \RuntimeException('invalid environment. "prod" and "dev" is supported.');
         }
 
@@ -103,6 +103,13 @@ abstract class Kernel implements IKernel
 
         $this->di = new Di();
         IoC::setDi($this->di);
+
+        //将kernel注册为内核服务
+        $self = $this;
+        $this->di->setShared('kernel', function () use ($self) {
+            return $self;
+        });
+
         //初始化一些基础服务
         $this->initConfigService();
         $this->initDbService();
@@ -203,7 +210,7 @@ abstract class Kernel implements IKernel
      */
     protected function getKernelFilePath()
     {
-        if($this->kernelFilePath === null) {
+        if ($this->kernelFilePath === null) {
             $r = new \ReflectionObject($this);
             $this->kernelFilePath = $r->getFileName();
         }
