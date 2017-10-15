@@ -102,7 +102,6 @@ class Generator
             }
 
             //获取类的类型：interface？abstract? final?
-            $classType = '';
             $reflector = new \ReflectionClass($className);
             if ($reflector->isInterface()) {
                 $classType = 'interface ';
