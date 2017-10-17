@@ -28,6 +28,19 @@ class HttpKernel extends Kernel
     protected $application;
 
     /**
+     * 默认路由参数
+     *
+     * @var array
+     */
+    protected $defaultRouterParameters = [
+        'namespace' => 'App\Controller',
+        'controller' => 'Index',
+        'action' => 'index',
+        '404_controller' => '',
+        '404_action' => ''
+    ];
+
+    /**
      * {@inheritdoc}
      */
     public function __construct($environment, $debug)
@@ -123,13 +136,14 @@ class HttpKernel extends Kernel
                 $routers = include($routeFile);
             }
             $router = new Router(false);
-            $router->setDefaultNamespace($config->get('router.default_namespace'));
-            $router->setDefaultController($config->get('router.default_controller'));
-            $router->setDefaultAction($config->get('router.default_action'));
+            //合并默认参数
+            $self->defaultRouterParameters = array_merge($self->defaultRouterParameters, $self->getDefaultRouterParameters());
+            $router->setDefaultNamespace($self->getDefaultRouterNamespace());
+            $router->setDefaultController($self->getDefaultRouterController());
+            $router->setDefaultAction($self->getDefaultRouterAction());
             $router->removeExtraSlashes(true);
-            if ($notFoundController = $config->get('router.404_page.controller') && $notFoundAction = $config->get('router.404_page.action')) {
-                $router->notFound((array)$config->get('router.404_page'));
-            }
+            $router->notFound($self->getNotFoundRouter());
+
 
             foreach ($routers as $url => $route) {
                 if (count($route) !== count($route, COUNT_RECURSIVE)) {
@@ -149,6 +163,57 @@ class HttpKernel extends Kernel
             return $router;
 
         });
+    }
+
+    /**
+     * 可通过此方法覆盖默认方法
+     */
+    protected function getDefaultRouterParameters()
+    {
+        return [];
+    }
+
+    /**
+     * 获取路由的默认namespace
+     *
+     * @return string
+     */
+    protected function getDefaultRouterNamespace()
+    {
+        return $this->defaultRouterParameters['namespace'];
+    }
+
+    /**
+     * 默认控制器
+     *
+     * @return string
+     */
+    protected function getDefaultRouterController()
+    {
+        return $this->defaultRouterParameters['controller'];
+    }
+
+    /**
+     * 默认控制器方法
+     *
+     * @return string
+     */
+    protected function getDefaultRouterAction()
+    {
+        return $this->defaultRouterParameters['action'];
+    }
+
+    /**
+     * 404页面路由
+     *
+     * @return array
+     */
+    protected function getNotFoundRouter()
+    {
+        return [
+            'controller' => $this->defaultRouterParameters['404_controller'],
+            'action' => $this->defaultRouterParameters['404_action']
+        ];
     }
 
     /**
