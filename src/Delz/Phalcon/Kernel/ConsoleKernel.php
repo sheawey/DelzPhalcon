@@ -44,7 +44,11 @@ class ConsoleKernel extends Kernel
         $arguments = $this->input->getArguments();
         //如果没有参数，说明没有任何命令可执行，显示所有命令
         if (count($arguments) === 0) {
-            $output->writeln("<error>please test \"list env=prod or list env=dev\" command.</error>");
+            $output->writeln("usage: " . $this->input->getName() . "\t[command] [<args>]");
+            $output->writeln("Command list:");
+            foreach ($this->di->get("commandPool")->all() as $k => $v) {
+                $output->writeln("<comment>$k</comment>\t" . $v->getDescription());
+            }
         } else {
             //第一个参数为命令名称
             $commandName = array_shift($arguments);
