@@ -4,6 +4,7 @@ namespace Delz\Phalcon\Kernel;
 
 use Delz\Console\Command\Pool;
 use Delz\Config\IConfig;
+use Delz\Console\Contract\IInput;
 use Delz\Console\Input\ArgvInput;
 use Delz\Console\Output\Stream;
 use Delz\Phalcon\Command\IdeGeneratorCommand;
@@ -17,11 +18,17 @@ use Delz\Phalcon\Command\ListCommand;
 class ConsoleKernel extends Kernel
 {
     /**
+     * @var IInput
+     */
+    protected $input;
+
+    /**
      * {@inheritdoc}
      */
-    public function __construct($environment, $debug)
+    public function __construct(IInput $input, $environment, $debug)
     {
         parent::__construct($environment, $debug);
+        $this->input = $input;
         $this->initCommandPoolService();
     }
 
@@ -33,9 +40,8 @@ class ConsoleKernel extends Kernel
         if (php_sapi_name() !== 'cli') {
             throw new \RuntimeException("can not run this script outside of cli");
         }
-        $input = new ArgvInput();
         $output = new Stream();
-        $arguments = $input->getArguments();
+        $arguments = $this->input->getArguments();
         //如果没有参数，说明没有任何命令可执行，显示所有命令
         if (count($arguments) === 0) {
             $output->writeln("<error>please test \"list env=prod or list env=dev\" command.</error>");
