@@ -1,6 +1,6 @@
 <?php
 
-namespace Delz\Phalcon;
+namespace Delz\Phalcon\Command;
 
 use Delz\Console\Command\Command;
 use Phalcon\DiInterface;

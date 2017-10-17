@@ -6,7 +6,8 @@ use Delz\Console\Command\Pool;
 use Delz\Config\IConfig;
 use Delz\Console\Input\ArgvInput;
 use Delz\Console\Output\Stream;
-use Delz\Phalcon\IdeGeneratorCommand;
+use Delz\Phalcon\Command\IdeGeneratorCommand;
+use Delz\Phalcon\Command\ListCommand;
 
 /**
  * 控制台内核
@@ -67,6 +68,7 @@ class ConsoleKernel extends Kernel
             function () use ($config, $self) {
                 $pool = new Pool();
                 //加入一些系统服务
+                $pool->add(new ListCommand());
                 if($self->getEnvironment() == 'dev') {
                     $pool->add(new IdeGeneratorCommand());
                 }

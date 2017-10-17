@@ -1,6 +1,6 @@
 <?php
 
-namespace Delz\Phalcon;
+namespace Delz\Phalcon\Command;
 
 use Delz\Console\Contract\IInput;
 use Delz\Console\Contract\IOutput;
