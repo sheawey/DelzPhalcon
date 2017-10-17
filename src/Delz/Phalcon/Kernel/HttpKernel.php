@@ -33,7 +33,7 @@ class HttpKernel extends Kernel
     public function __construct($environment, $debug)
     {
         //解决网址大小写问题，将网址全部转化成小写
-        if(isset($_GET['_url'])) {
+        if (isset($_GET['_url'])) {
             $_GET['_url'] = strtolower($_GET['_url']);
         }
         parent::__construct($environment, $debug);
@@ -54,7 +54,7 @@ class HttpKernel extends Kernel
         if ($this->application) {
             return $this->application;
         }
-        $this->application =  new Application();
+        $this->application = new Application();
         $this->application->setDI($this->di);
         $this->application->setEventsManager($this->di->get('eventsManager'));
 
@@ -117,7 +117,7 @@ class HttpKernel extends Kernel
             $config = $self->di->getShared('config');
             $routeFile = $self->getResourceDir() . '/routers.php';
             $routers = [];
-            if(file_exists($routeFile)) {
+            if (file_exists($routeFile)) {
                 $routers = include($routeFile);
             }
             $router = new Router(false);
@@ -125,7 +125,7 @@ class HttpKernel extends Kernel
             $router->setDefaultController($config->get('router.default_controller'));
             $router->setDefaultAction($config->get('router.default_action'));
             $router->removeExtraSlashes(true);
-            if($notFoundController = $config->get('router.404_page.controller') && $notFoundAction = $config->get('router.404_page.action')) {
+            if ($notFoundController = $config->get('router.404_page.controller') && $notFoundAction = $config->get('router.404_page.action')) {
                 $router->notFound((array)$config->get('router.404_page'));
             }
 
