@@ -38,6 +38,8 @@ class HttpKernel extends Kernel
         }
         parent::__construct($environment, $debug);
         //初始化web服务
+        $this->initRequestService();
+        $this->initResponseService();
         $this->initViewService();
         $this->initRoutingService();
         $this->initUrlService();
