@@ -208,7 +208,7 @@ abstract class Kernel implements IKernel
     /**
      * 获取内核文件路径
      */
-    protected function getKernelFilePath()
+    public function getKernelFilePath()
     {
         if ($this->kernelFilePath === null) {
             $r = new \ReflectionObject($this);
