@@ -127,7 +127,6 @@ class Generator
             }
 
             $source .= PHP_EOL . "{";
-            echo $className . "\r\n";
             if ($className == 'Phalcon\Di\Injectable') {
 
                 $source .= '
