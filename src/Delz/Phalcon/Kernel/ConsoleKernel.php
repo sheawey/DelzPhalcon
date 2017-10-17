@@ -6,6 +6,7 @@ use Delz\Console\Command\Pool;
 use Delz\Config\IConfig;
 use Delz\Console\Input\ArgvInput;
 use Delz\Console\Output\Stream;
+use Delz\Phalcon\IdeGeneratorCommand;
 
 /**
  * 控制台内核
@@ -62,10 +63,16 @@ class ConsoleKernel extends Kernel
         /** @var IConfig $config */
         $config = $this->di->getShared('config');
 
+        $self = $this;
+
         $this->di->setShared(
             "commandPool",
-            function () use ($config) {
+            function () use ($config, $self) {
                 $pool = new Pool();
+                //加入一些系统服务
+                if($self->getEnvironment() == 'dev') {
+                    $pool->add(new IdeGeneratorCommand());
+                }
                 $commands = $config->get("commands");
                 if (is_array($commands) && count($commands) > 0) {
                     foreach ($commands as $command) {
