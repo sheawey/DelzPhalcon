@@ -4,6 +4,7 @@ namespace Delz\Phalcon\Kernel;
 
 use Delz\Console\Command\Pool;
 use Delz\Config\IConfig;
+use Delz\Console\Contract\ICommand;
 use Delz\Console\Contract\IInput;
 use Delz\Console\Input\ArgvInput;
 use Delz\Console\Output\Stream;
@@ -20,15 +21,32 @@ class ConsoleKernel extends Kernel
     /**
      * @var IInput
      */
-    protected $input;
+    protected $commandInput;
 
     /**
-     * {@inheritdoc}
+     * 初始化commandInput，并获取运行环境
+     *
+     * 默认运行环境是开发环境 dev
+     *
+     * @param bool $debug 是否开启debug
      */
-    public function __construct(IInput $input, $environment, $debug)
+    public function __construct($debug = false)
     {
+        if (php_sapi_name() !== 'cli') {
+            throw new \RuntimeException("can not run this script outside of cli");
+        }
+        $this->commandInput = new ArgvInput();
+        if ($this->commandInput->hasArgument('env')) {
+            $environment = strtolower($this->commandInput->getArgument('env'));
+            if (!in_array($environment, self::ENVIRONMENTS)) {
+                throw new \RuntimeException(
+                    sprintf("invalid environment: %s", $environment)
+                );
+            }
+        } else {
+            $environment = 'dev';
+        }
         parent::__construct($environment, $debug);
-        $this->input = $input;
         $this->initCommandPoolService();
     }
 
@@ -37,28 +55,24 @@ class ConsoleKernel extends Kernel
      */
     public function handle()
     {
-        if (php_sapi_name() !== 'cli') {
-            throw new \RuntimeException("can not run this script outside of cli");
-        }
-        $output = new Stream();
-        $arguments = $this->input->getArguments();
+        $commandOutput = new Stream();
+        $arguments = $this->commandInput->getArguments();
         //如果没有参数，说明没有任何命令可执行，显示所有命令
         if (count($arguments) === 0) {
-            $output->writeln("usage: " . $this->input->getName() . "\t[command] [<args>]");
-            $output->writeln("Command list:");
+            $commandOutput->writeln("usage: " . $this->commandInput->getName() . "\t[command] [<args>]");
+            $commandOutput->writeln("Command list:");
             foreach ($this->di->get("commandPool")->all() as $k => $v) {
-                $output->writeln("<comment>$k</comment>\t" . $v->getDescription());
+                $commandOutput->writeln("<comment>$k</comment>\t" . $v->getDescription());
             }
         } else {
             //第一个参数为命令名称
-            $commandName = array_shift($arguments);
+            $commandName = $this->commandInput->getFirstArgument();
             if (!$this->di->get("commandPool")->has($commandName)) {
-                $output->writeln("<error>command: " . $commandName . " not exist</error>");
+                $commandOutput->writeln("<error>command: " . $commandName . " not exist</error>");
             } else {
+                /** @var ICommand $command */
                 $command = $this->di->get("commandPool")->get($commandName);
-                array_unshift($arguments, $commandName);
-                $commandInput = new ArgvInput($arguments);
-                $command->run($commandInput);
+                $command->run($this->commandInput, $commandOutput);
             }
         }
     }
@@ -79,7 +93,7 @@ class ConsoleKernel extends Kernel
                 $pool = new Pool();
                 //加入一些系统服务
                 $pool->add(new ListCommand());
-                if($self->getEnvironment() == 'dev') {
+                if ($self->getEnvironment() == 'dev') {
                     $pool->add(new IdeGeneratorCommand());
                 }
                 $commands = $config->get("commands");

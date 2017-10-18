@@ -4,7 +4,6 @@ namespace Delz\Phalcon\Command;
 
 use Delz\Console\Contract\IInput;
 use Delz\Console\Contract\IOutput;
-use Delz\Config\IConfig;
 use Delz\Phalcon\Ide\Generator;
 
 /**
@@ -20,20 +19,30 @@ class IdeGeneratorCommand extends DiAwareCommand
     protected function execute(IInput $input = null, IOutput $output = null)
     {
         //获取配置参数ide.cphalcon_path和ide.output_path
-        /** @var IConfig $config */
-        $config = $this->getDi()->get("config");
-        $cphalconPath = $config->get("ide.cphalcon_path");
-        if(!is_dir($cphalconPath)) {
+        if ($input->hasArgument('cphalcon_path')) {
+            $cphalconPath = $input->getArgument('cphalcon_path');
+            $cphalconPath = realpath($this->di->get('kernel')->getKernelFilePath() . '/' . trim($cphalconPath, '/'));
+        } else {
+            $output->writeln("<error>cphalcon_path is not set.</error>");
+            return false;
+        }
+        if (!is_dir($cphalconPath)) {
             $output->writeln(
-                sprintf("<error>ide.cphalcon_path: %s is not exist.</error>", $cphalconPath)
+                sprintf("<error>cphalcon_path: %s is not exist.</error>", $cphalconPath)
             );
             return false;
         }
 
-        $outputPath = $config->get("ide.output_path");
-        if(!is_dir($outputPath) && !is_writable($outputPath)) {
+
+        if ($input->hasArgument('output_path')) {
+            $outputPath = $input->getArgument('output_path');
+            $outputPath = realpath($this->di->get('kernel')->getKernelFilePath() . '/' . trim($outputPath, '/') . '/.ide');
+        } else {
+            $outputPath = realpath($this->di->get('kernel')->getAppDir() . '/.ide');
+        }
+        if (!is_dir($outputPath) && !is_writable($outputPath)) {
             $output->writeln(
-                sprintf("<error>ide.output_path: %s is not exist or can not writable.</error>", $outputPath)
+                sprintf("<error>output_path: %s is not exist or can not writable.</error>", $outputPath)
             );
             return false;
         }
