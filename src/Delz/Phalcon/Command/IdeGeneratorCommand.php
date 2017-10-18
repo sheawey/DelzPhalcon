@@ -21,7 +21,7 @@ class IdeGeneratorCommand extends DiAwareCommand
         //获取配置参数ide.cphalcon_path和ide.output_path
         if ($input->hasArgument('cphalcon_path')) {
             $cphalconPath = $input->getArgument('cphalcon_path');
-            $cphalconPath = realpath($this->di->get('kernel')->getKernelFilePath() . '/' . trim($cphalconPath, '/'));
+            $cphalconPath = realpath(dirname($this->di->get('kernel')->getKernelFilePath()) . '/' . trim($cphalconPath, '/'));
         } else {
             $output->writeln("<error>cphalcon_path is not set.</error>");
             return false;
@@ -36,10 +36,11 @@ class IdeGeneratorCommand extends DiAwareCommand
 
         if ($input->hasArgument('output_path')) {
             $outputPath = $input->getArgument('output_path');
-            $outputPath = realpath($this->di->get('kernel')->getKernelFilePath() . '/' . trim($outputPath, '/') . '/.ide');
+            $outputPath = realpath(dirname($this->di->get('kernel')->getKernelFilePath()) . '/' . trim($outputPath, '/') . '/.ide');
         } else {
-            $outputPath = realpath($this->di->get('kernel')->getAppDir() . '/.ide');
+            $outputPath = $this->di->get('kernel')->getAppDir() . '/.ide';
         }
+
         if (!is_dir($outputPath) && !is_writable($outputPath)) {
             $output->writeln(
                 sprintf("<error>output_path: %s is not exist or can not writable.</error>", $outputPath)
@@ -50,7 +51,7 @@ class IdeGeneratorCommand extends DiAwareCommand
         $generator = new Generator($cphalconPath, $outputPath);
         $generator->make();
 
-        $output->writeln("Done.");
+        $output->writeln("Generated success.");
     }
 
 
