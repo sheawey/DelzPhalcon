@@ -53,7 +53,7 @@ class ConsoleKernel extends Kernel
     /**
      * {@inheritdoc}
      */
-    public function handle()
+    public function boot()
     {
         $commandOutput = new Stream();
         $arguments = $this->commandInput->getArguments();

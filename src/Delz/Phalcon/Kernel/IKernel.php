@@ -19,10 +19,10 @@ interface IKernel
     public function getDi();
 
     /**
-     * 处理应用
+     * 启动应用
      * @return mixed
      */
-    public function handle();
+    public function boot();
 
     /**
      * 获取运行环境（开发 or 生产 或者其它）

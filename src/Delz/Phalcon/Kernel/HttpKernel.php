@@ -79,10 +79,10 @@ class HttpKernel extends Kernel
     /**
      * {@inheritdoc}
      */
-    public function handle()
+    public function boot()
     {
         $response = $this->getApplication()->handle();
-        return $response;
+        return $response->send();
     }
 
     /**
