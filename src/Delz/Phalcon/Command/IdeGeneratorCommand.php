@@ -21,7 +21,7 @@ class IdeGeneratorCommand extends DiAwareCommand
         //获取配置参数ide.cphalcon_path和ide.output_path
         if ($input->hasArgument('cphalcon_path')) {
             $cphalconPath = $input->getArgument('cphalcon_path');
-            $cphalconPath = realpath(dirname($this->di->get('kernel')->getKernelFilePath()) . '/' . trim($cphalconPath, '/'));
+            $cphalconPath = $this->di->get('kernel')->getAppDir() . '/' . trim($cphalconPath, '/');
         } else {
             $output->writeln("<error>cphalcon_path is not set.</error>");
             return false;
@@ -36,7 +36,7 @@ class IdeGeneratorCommand extends DiAwareCommand
 
         if ($input->hasArgument('output_path')) {
             $outputPath = $input->getArgument('output_path');
-            $outputPath = realpath(dirname($this->di->get('kernel')->getKernelFilePath()) . '/' . trim($outputPath, '/') . '/.ide');
+            $outputPath = $this->di->get('kernel')->getAppDir() . '/' . trim($outputPath, '/') . '/.ide';
         } else {
             $outputPath = $this->di->get('kernel')->getAppDir() . '/.ide';
         }
