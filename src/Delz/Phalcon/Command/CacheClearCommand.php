@@ -20,7 +20,7 @@ class CacheClearCommand extends DiAwareCommand
     {
         $cacheDir = $this->di->get('kernel')->getCacheDir() . '/' . $this->di->get('kernel')->getEnvironment();
 
-        if (Dir::delete($cacheDir)) {
+        if (Dir::delete($cacheDir, true)) {
             $output->writeln("清空缓存成功！");
         } else {
             $output->writeln("<error>清空缓存失败，请检查目录是否存在或者权限是否可写。</error>");
