@@ -10,6 +10,7 @@ use Delz\Console\Input\ArgvInput;
 use Delz\Console\Output\Stream;
 use Delz\Phalcon\Command\IdeGeneratorCommand;
 use Delz\Phalcon\Command\ListCommand;
+use Delz\Phalcon\Command\CacheClearCommand;
 
 /**
  * 控制台内核
@@ -58,7 +59,7 @@ class ConsoleKernel extends Kernel
         $commandOutput = new Stream();
         //第一个参数为命令名称
         $commandName = $this->commandInput->getFirstArgument();
-        if(is_null($commandName)) {
+        if (is_null($commandName)) {
             //显示所有命令
             $commandOutput->writeln("usage: " . $this->commandInput->getName() . "\t[command] [<args>]");
             $commandOutput->writeln("Command list:");
@@ -92,6 +93,7 @@ class ConsoleKernel extends Kernel
                 $pool = new Pool();
                 //加入一些系统服务
                 $pool->add(new ListCommand());
+                $pool->add(new CacheClearCommand());
                 if ($self->getEnvironment() == 'dev') {
                     $pool->add(new IdeGeneratorCommand());
                 }
