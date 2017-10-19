@@ -92,7 +92,7 @@ class HttpKernel extends Kernel
      */
     protected function getViewDir()
     {
-        return $this->getAppDir() . '／../src/App/View/';
+        return $this->getAppDir() . '/../src/App/View/';
     }
 
     /**
