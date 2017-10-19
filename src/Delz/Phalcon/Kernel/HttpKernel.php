@@ -45,6 +45,12 @@ class HttpKernel extends Kernel
      */
     public function __construct($environment, $debug)
     {
+        //处理利用php内置web服务器的情况
+        if (php_sapi_name() == 'cli-server') {
+            if (!file_exists($this->getAppDir() . DIRECTORY_SEPARATOR . $_SERVER['REQUEST_URI'])) {
+                $_GET['_url'] = preg_replace('#^' . preg_quote($_SERVER['SCRIPT_NAME']) . '#', '', $_SERVER['REQUEST_URI']);
+            }
+        }
         //解决网址大小写问题，将网址全部转化成小写
         if (isset($_GET['_url'])) {
             $_GET['_url'] = strtolower($_GET['_url']);
