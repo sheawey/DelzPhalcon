@@ -56,17 +56,16 @@ class ConsoleKernel extends Kernel
     public function boot()
     {
         $commandOutput = new Stream();
-        $arguments = $this->commandInput->getArguments();
-        //如果没有参数，说明没有任何命令可执行，显示所有命令
-        if (count($arguments) === 0) {
+        //第一个参数为命令名称
+        $commandName = $this->commandInput->getFirstArgument();
+        if(is_null($commandName)) {
+            //显示所有命令
             $commandOutput->writeln("usage: " . $this->commandInput->getName() . "\t[command] [<args>]");
             $commandOutput->writeln("Command list:");
             foreach ($this->di->get("commandPool")->all() as $k => $v) {
                 $commandOutput->writeln("<comment>$k</comment>\t" . $v->getDescription());
             }
         } else {
-            //第一个参数为命令名称
-            $commandName = $this->commandInput->getFirstArgument();
             if (!$this->di->get("commandPool")->has($commandName)) {
                 $commandOutput->writeln("<error>command: " . $commandName . " not exist</error>");
             } else {
