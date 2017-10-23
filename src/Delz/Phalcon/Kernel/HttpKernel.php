@@ -184,7 +184,7 @@ class HttpKernel extends Kernel
      *
      * @return string
      */
-    protected function getDefaultRouterNamespace()
+    public function getDefaultRouterNamespace()
     {
         return $this->defaultRouterParameters['namespace'];
     }
