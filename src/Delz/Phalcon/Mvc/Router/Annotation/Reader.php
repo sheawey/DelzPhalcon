@@ -164,6 +164,8 @@ class Reader implements InjectionAwareInterface
 
             $actionName = preg_replace('#' . preg_quote($this->actionSuffix) . '$#', '', $action);
             $controllerName = preg_replace('#' . preg_quote($this->controllerSuffix) . '$#', '', $controller);
+            //去掉控制器defaultNamespace部分
+            $controllerName = str_replace($this->getDI()->get('kernel')->getDefaultRouterNamespace().'\\', '', $controllerName);
 
             $paths = [
                 'controller' => $controllerName,
