@@ -194,6 +194,16 @@ abstract class Kernel implements IKernel
     }
 
     /**
+     * 获取源码路径，一般指src目录
+     *
+     * @return string
+     */
+    public function getSourceDir()
+    {
+        return $this->appDir . '/../src';
+    }
+
+    /**
      * 资源文件夹默认放在项目目录上层目录的resource目录
      *
      * 可根据实际情况重写此方法调整
