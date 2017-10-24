@@ -56,6 +56,9 @@ class HttpKernel extends Kernel
             $_GET['_url'] = strtolower($_GET['_url']);
         }
         parent::__construct($environment, $debug);
+
+        //合并默认路由参数
+        $this->defaultRouterParameters = array_merge($this->defaultRouterParameters, $this->getDefaultRouterParameters());
         //初始化web服务
         $this->initRequestService();
         $this->initResponseService();
@@ -142,8 +145,6 @@ class HttpKernel extends Kernel
                 $routers = include($routeFile);
             }
             $router = new Router(false);
-            //合并默认参数
-            $self->defaultRouterParameters = array_merge($self->defaultRouterParameters, $self->getDefaultRouterParameters());
             $router->setDefaultNamespace($self->getDefaultRouterNamespace());
             $router->setDefaultController($self->getDefaultRouterController());
             $router->setDefaultAction($self->getDefaultRouterAction());
