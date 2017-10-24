@@ -32,7 +32,7 @@ class RouterGenerateCommand extends DiAwareCommand
             );
         }
         $environment = $this->getDi()->get('kernel')->getEnvironment();
-        $kernel = new $kernelClass($environment);
+        $kernel = new $kernelClass($environment, false);
         //获取控制器目录
         $sourceDir = $this->getDi()->get('kernel')->getSourceDir();
         $controllerDir = $sourceDir . DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, $kernel->getDefaultRouterNamespace());
@@ -50,10 +50,10 @@ class RouterGenerateCommand extends DiAwareCommand
             $routeCollection->append($collection);
         }
 
-        $routerFile = $kernel->getConfigDir . '/routing/main_' . $environment . '.php';
+        $routerFile = $kernel->getConfigDir() . '/routing/main_' . $environment . '.php';
         $data = $routeCollection->toArray();
-        $result = File::write($routerFile, var_export($data, true));
-        if($result === false) {
+        $result = File::write($routerFile, '<?php ' . PHP_EOL . PHP_EOL . 'return ' . var_export($data, true) . ';');
+        if ($result === false) {
             throw new \RuntimeException("write fail");
         }
         $output->write("<info>generated success.</info>");

@@ -190,7 +190,7 @@ abstract class Kernel implements IKernel
     public function getRootDir()
     {
         if ($this->rootDir === null) {
-            $this->rootDir = dirname(dirname(dirname($this->getKernelFilePath())));
+            $this->rootDir = dirname(dirname($this->getKernelFilePath()));
         }
 
         return $this->rootDir;
