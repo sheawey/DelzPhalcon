@@ -18,7 +18,7 @@ class CacheClearCommand extends DiAwareCommand
      */
     protected function execute(IInput $input = null, IOutput $output = null)
     {
-        $cacheDir = $this->di->get('kernel')->getCacheDir() . '/' . $this->di->get('kernel')->getEnvironment();
+        $cacheDir = $this->di->get('kernel')->getCacheDir();
 
         if (Dir::delete($cacheDir, true)) {
             $output->writeln("清空缓存成功！");

@@ -2,6 +2,7 @@
 
 namespace Delz\Phalcon\Kernel;
 
+use Delz\Common\Util\Dir;
 use Delz\Phalcon\Di;
 use Delz\Phalcon\IoC;
 use Phalcon\DiInterface;
@@ -39,9 +40,18 @@ abstract class Kernel implements IKernel
     protected $appId;
 
     /**
+     * 根目录
+     *
      * @var string
      */
     protected $rootDir;
+
+    /**
+     * 缓存目录
+     *
+     * @var string
+     */
+    protected $cacheDir;
 
     /**
      * 程序运行环境
@@ -164,7 +174,14 @@ abstract class Kernel implements IKernel
      */
     public function getCacheDir()
     {
-        return $this->getResourceDir() . '/cache';
+        if(is_null($this->cacheDir)) {
+            $cacheDir = $this->getResourceDir() . '/cache/' . $this->environment;
+            if(!is_dir($cacheDir)) {
+                Dir::make($cacheDir);
+            }
+            $this->cacheDir = $cacheDir;
+        }
+        return $this->cacheDir;
     }
 
     /**

@@ -262,7 +262,7 @@ class HttpKernel extends Kernel
                 $volt = new Volt($view, $di);
                 $volt->setOptions(
                     [
-                        "compiledPath" => $self->getCacheDir() . "/view/",
+                        "compiledPath" => $self->getCacheDir(),
                         "compiledExtension" => ".compiled",
                     ]
                 );
