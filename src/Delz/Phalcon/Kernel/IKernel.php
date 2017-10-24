@@ -67,6 +67,20 @@ interface IKernel
     public function getResourceDir();
 
     /**
+     * 获取配置文件路径
+     *
+     * @return string
+     */
+    public function getConfigDir();
+
+    /**
+     * 获取根路径
+     *
+     * @return string
+     */
+    public function getRootDir();
+
+    /**
      * 获取项目目录
      *
      * @return string

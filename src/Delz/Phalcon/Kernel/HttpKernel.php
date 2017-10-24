@@ -98,7 +98,7 @@ class HttpKernel extends Kernel
      */
     protected function getViewDir()
     {
-        return $this->getAppDir() . '/../src/App/View/';
+        return $this->getSourceDir() . '/App/View/';
     }
 
     /**
@@ -136,7 +136,7 @@ class HttpKernel extends Kernel
         $this->di->setShared('router', function () use ($self) {
             /** @var IConfig $config */
             $config = $self->di->getShared('config');
-            $routeFile = $self->getResourceDir() . '/routers.php';
+            $routeFile = $self->getRouterResource();
             $routers = [];
             if (file_exists($routeFile)) {
                 $routers = include($routeFile);
@@ -169,6 +169,16 @@ class HttpKernel extends Kernel
             return $router;
 
         });
+    }
+
+    /**
+     * 获取路由文件
+     *
+     * @return string
+     */
+    public function getRouterResource()
+    {
+        return $this->getConfigDir() . '/routing/main_' . $this->getEnvironment() . '.php';
     }
 
     /**
@@ -251,7 +261,7 @@ class HttpKernel extends Kernel
                 $volt = new Volt($view, $di);
                 $volt->setOptions(
                     [
-                        "compiledPath" => $self->getResourceDir() . "/cache/view/",
+                        "compiledPath" => $self->getCacheDir() . "/view/",
                         "compiledExtension" => ".compiled",
                     ]
                 );

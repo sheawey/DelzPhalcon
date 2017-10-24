@@ -46,6 +46,13 @@ class Reader implements InjectionAwareInterface
     protected $actionSuffix = 'Action';
 
     /**
+     * 默认命名空间
+     *
+     * @var string
+     */
+    protected $namespace;
+
+    /**
      * {@inheritdoc}
      */
     public function __construct()
@@ -95,7 +102,7 @@ class Reader implements InjectionAwareInterface
             foreach ($methods as $action => $methodCollection) {
                 foreach ($methodCollection->getAnnotations() as $annotation) {
                     $route = $this->parseMethodAnnotation($className, $action, $routerPrefix, $annotation);
-                    if(!is_null($route)) {
+                    if (!is_null($route)) {
                         $routeCollection->add($route);
                     }
                 }
@@ -158,14 +165,16 @@ class Reader implements InjectionAwareInterface
             }
             $pattern = $this->normalizeRouter($routerPrefix) . $this->normalizeRouter($annotation->getArgument(0));
 
-            if(!$pattern) {
+            if (!$pattern) {
                 $pattern = '/';
             }
 
             $actionName = preg_replace('#' . preg_quote($this->actionSuffix) . '$#', '', $action);
             $controllerName = preg_replace('#' . preg_quote($this->controllerSuffix) . '$#', '', $controller);
             //去掉控制器defaultNamespace部分
-            $controllerName = str_replace($this->getDI()->get('kernel')->getDefaultRouterNamespace().'\\', '', $controllerName);
+            if (!is_null($this->namespace)) {
+                $controllerName = preg_replace('#^' . preg_quote($this->namespace) . '\\#', '', $controllerName);
+            }
 
             $paths = [
                 'controller' => $controllerName,
@@ -232,6 +241,16 @@ class Reader implements InjectionAwareInterface
     public function setActionSuffix($actionSuffix)
     {
         $this->actionSuffix = $actionSuffix;
+    }
+
+    /**
+     * 设置命名空间
+     *
+     * @param string $namespace
+     */
+    public function setNamespace($namespace)
+    {
+        $this->namespace = $namespace;
     }
 
     /**

@@ -39,11 +39,9 @@ abstract class Kernel implements IKernel
     protected $appId;
 
     /**
-     * 应用程序路径
-     *
      * @var string
      */
-    protected $appDir;
+    protected $rootDir;
 
     /**
      * 程序运行环境
@@ -99,7 +97,7 @@ abstract class Kernel implements IKernel
         }
 
         $this->appId = md5($this->getKernelFilePath() . $this->environment);
-        $this->appDir = $this->getAppDir();
+        $this->rootDir = $this->getRootDir();
 
         $this->di = new Di();
         IoC::setDi($this->di);
@@ -172,26 +170,40 @@ abstract class Kernel implements IKernel
     /**
      * {@inheritdoc}
      */
+    public function getConfigDir()
+    {
+        return $this->getResourceDir() . '/config';
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
     public function getLogDir()
     {
         return $this->getResourceDir() . '/log';
     }
 
     /**
-     * 默认假设kernel文件放在项目目录下
-     *
-     * 可根据实际情况调整
-     *
-     * @return string
+     * {@inheritdoc}
+     */
+    public function getRootDir()
+    {
+        if ($this->rootDir === null) {
+            $this->rootDir = dirname(dirname(dirname($this->getKernelFilePath())));
+        }
+
+        return $this->rootDir;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getAppDir()
     {
-        if ($this->appDir === null) {
-            $this->appDir = dirname($this->getKernelFilePath());
-        }
-
-        return $this->appDir;
+        return $this->getRootDir() . '/public';
     }
+
 
     /**
      * 获取源码路径，一般指src目录
@@ -200,7 +212,7 @@ abstract class Kernel implements IKernel
      */
     public function getSourceDir()
     {
-        return $this->appDir . '/../src';
+        return $this->getRootDir() . '/src';
     }
 
     /**
@@ -212,7 +224,7 @@ abstract class Kernel implements IKernel
      */
     public function getResourceDir()
     {
-        return $this->appDir . '/../resource';
+        return $this->getRootDir() . '/resource';
     }
 
     /**
