@@ -32,6 +32,7 @@ class RouterGenerateCommand extends DiAwareCommand
             );
         }
         $environment = $this->getDi()->get('kernel')->getEnvironment();
+        /** @var HttpKernel $kernel */
         $kernel = new $kernelClass($environment, false);
         //获取控制器目录
         $sourceDir = $this->getDi()->get('kernel')->getSourceDir();
