@@ -57,7 +57,7 @@ class RouterGenerateCommand extends DiAwareCommand
         if ($result === false) {
             throw new \RuntimeException("write fail");
         }
-        $output->write("<info>generated success.</info>");
+        $output->writeln("<info>generated success.</info>");
     }
 
     /**
