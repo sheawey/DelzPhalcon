@@ -11,6 +11,7 @@ use Delz\Console\Output\Stream;
 use Delz\Phalcon\Command\IdeGeneratorCommand;
 use Delz\Phalcon\Command\ListCommand;
 use Delz\Phalcon\Command\CacheClearCommand;
+use Delz\Phalcon\Command\RouterGenerateCommand;
 
 /**
  * 控制台内核
@@ -94,6 +95,7 @@ class ConsoleKernel extends Kernel
                 //加入一些系统服务
                 $pool->add(new ListCommand());
                 $pool->add(new CacheClearCommand());
+                $pool->add(new RouterGenerateCommand());
                 if ($self->getEnvironment() == 'dev') {
                     $pool->add(new IdeGeneratorCommand());
                 }
