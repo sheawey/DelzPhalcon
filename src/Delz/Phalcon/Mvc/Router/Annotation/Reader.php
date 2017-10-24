@@ -173,7 +173,7 @@ class Reader implements InjectionAwareInterface
             $controllerName = preg_replace('#' . preg_quote($this->controllerSuffix) . '$#', '', $controller);
             //去掉控制器defaultNamespace部分
             if (!is_null($this->namespace)) {
-                $controllerName = preg_replace('#^' . preg_quote($this->namespace) . '\\#', '', $controllerName);
+                $controllerName = preg_replace('#^' . preg_quote($this->namespace . '\\') . '#', '', $controllerName);
             }
 
             $paths = [
