@@ -79,6 +79,21 @@ class ConsoleKernel extends Kernel
     }
 
     /**
+     * 获取默认命令
+     *
+     * @return array
+     */
+    protected function getDefaultCommands()
+    {
+        return [
+            new ListCommand(),
+            new CacheClearCommand(),
+            new RouterGenerateCommand(),
+            new IdeGeneratorCommand()
+        ];
+    }
+
+    /**
      * 初始化命令容器服务
      */
     protected function initCommandPoolService()
@@ -92,12 +107,9 @@ class ConsoleKernel extends Kernel
             "commandPool",
             function () use ($config, $self) {
                 $pool = new Pool();
-                //加入一些系统服务
-                $pool->add(new ListCommand());
-                $pool->add(new CacheClearCommand());
-                $pool->add(new RouterGenerateCommand());
-                if ($self->getEnvironment() == 'dev') {
-                    $pool->add(new IdeGeneratorCommand());
+                //加入默认命令
+                foreach($this->getDefaultCommands() as $command) {
+                    $pool->add($command);
                 }
                 $commands = $config->get("commands");
                 if (is_array($commands) && count($commands) > 0) {
