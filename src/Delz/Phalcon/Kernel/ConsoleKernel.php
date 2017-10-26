@@ -108,7 +108,7 @@ class ConsoleKernel extends Kernel
             function () use ($config, $self) {
                 $pool = new Pool();
                 //加入默认命令
-                foreach($this->getDefaultCommands() as $command) {
+                foreach($self->getDefaultCommands() as $command) {
                     $pool->add($command);
                 }
                 $commands = $config->get("commands");
