@@ -1,11 +1,11 @@
 <?php
 
-namespace Delz\Phalcon\Builder;
+namespace Delz\Phalcon\Builder\Common;
 
 /**
  * 生成器接口
  *
- * @package Delz\Phalcon\Builder
+ * @package Delz\Phalcon\Builder\Common
  */
 interface IBuilder
 {

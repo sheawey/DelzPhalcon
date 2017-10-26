@@ -3,6 +3,8 @@
 namespace Delz\Phalcon\Builder;
 
 use Phalcon\Version;
+use Delz\Phalcon\Builder\Common\IBuilder;
+use Delz\Phalcon\Builder\Common\BuilderException;
 
 /**
  * Ide类库生成器
@@ -59,11 +61,12 @@ class Ide implements IBuilder
     /**
      * @param string $cphalconDirectory cphalcon源码目录
      * @param string $exportDirectory 要导出实例代码的目录
+     * @throws BuilderException
      */
     public function __construct($cphalconDirectory, $exportDirectory)
     {
         if (!extension_loaded("phalcon")) {
-            throw new \RuntimeException("PHP extension:'phalcon' is not loaded.");
+            throw new BuilderException("PHP extension:'phalcon' is not loaded.");
         }
         $this->cphalconDirectory = realpath($cphalconDirectory);
         $this->exportDirectory = realpath($exportDirectory);

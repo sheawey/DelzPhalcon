@@ -2,6 +2,9 @@
 
 namespace Delz\Phalcon\Builder;
 
+use Delz\Phalcon\Builder\Common\IBuilder;
+use Delz\Phalcon\Builder\Common\BuilderException;
+
 /**
  * 控制生成器
  *

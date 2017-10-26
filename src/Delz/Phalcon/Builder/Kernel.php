@@ -3,6 +3,8 @@
 namespace Delz\Phalcon\Builder;
 
 use Delz\Common\Util\Str;
+use Delz\Phalcon\Builder\Common\IBuilder;
+use Delz\Phalcon\Builder\Common\BuilderException;
 
 /**
  * 内核生成器
