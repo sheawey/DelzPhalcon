@@ -4,7 +4,7 @@ namespace Delz\Phalcon\Command;
 
 use Delz\Console\Contract\IInput;
 use Delz\Console\Contract\IOutput;
-use Delz\Phalcon\Ide\Generator;
+use Delz\Phalcon\Generator\Ide;
 
 /**
  * Ide类库生成器命令
@@ -48,7 +48,7 @@ class IdeGeneratorCommand extends DiAwareCommand
             return false;
         }
 
-        $generator = new Generator($cphalconPath, $outputPath);
+        $generator = new Ide($cphalconPath, $outputPath);
         $generator->make();
 
         $output->writeln("Generated success.");

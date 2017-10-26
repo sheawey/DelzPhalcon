@@ -1,6 +1,6 @@
 <?php
 
-namespace Delz\Phalcon\Ide;
+namespace Delz\Phalcon\Generator;
 
 use Phalcon\Version;
 
@@ -9,7 +9,7 @@ use Phalcon\Version;
  *
  * @package Delz\Phalcon\Ide
  */
-class Generator
+class Ide
 {
     /**
      * cphalcon源码目录
