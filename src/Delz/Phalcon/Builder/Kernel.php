@@ -44,7 +44,7 @@ class Kernel implements IBuilder
      */
     public function build()
     {
-        
+
     }
 
 }

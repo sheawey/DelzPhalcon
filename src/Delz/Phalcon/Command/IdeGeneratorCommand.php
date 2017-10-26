@@ -4,7 +4,7 @@ namespace Delz\Phalcon\Command;
 
 use Delz\Console\Contract\IInput;
 use Delz\Console\Contract\IOutput;
-use Delz\Phalcon\Generator\Ide;
+use Delz\Phalcon\Builder\Ide;
 
 /**
  * Ide类库生成器命令

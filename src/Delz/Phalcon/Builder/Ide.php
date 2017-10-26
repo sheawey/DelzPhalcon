@@ -1,15 +1,15 @@
 <?php
 
-namespace Delz\Phalcon\Generator;
+namespace Delz\Phalcon\Builder;
 
 use Phalcon\Version;
 
 /**
  * Ide类库生成器
  *
- * @package Delz\Phalcon\Ide
+ * @package Delz\Phalcon\Builder
  */
-class Ide
+class Ide implements IBuilder
 {
     /**
      * cphalcon源码目录
@@ -73,7 +73,7 @@ class Ide
     /**
      * 生成相应类库文件
      */
-    public function make()
+    public function build()
     {
         //获取phalcon版本，作为文件目录
         $version = Version::get();
