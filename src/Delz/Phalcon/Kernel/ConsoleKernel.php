@@ -8,6 +8,7 @@ use Delz\Console\Contract\ICommand;
 use Delz\Console\Contract\IInput;
 use Delz\Console\Input\ArgvInput;
 use Delz\Console\Output\Stream;
+use Delz\Phalcon\Command\AppConfigCommand;
 use Delz\Phalcon\Command\IdeGeneratorCommand;
 use Delz\Phalcon\Command\ListCommand;
 use Delz\Phalcon\Command\CacheClearCommand;
@@ -89,7 +90,8 @@ class ConsoleKernel extends Kernel
             new ListCommand(),
             new CacheClearCommand(),
             new RouterGenerateCommand(),
-            new IdeGeneratorCommand()
+            new IdeGeneratorCommand(),
+            new AppConfigCommand()
         ];
     }
 
