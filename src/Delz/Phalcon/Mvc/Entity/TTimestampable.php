@@ -76,7 +76,9 @@ trait TTimestampable
             return;
         }
         $this->getEventsManager()->attach('model:beforeValidationOnCreate',function(Event $event, $model){
-            $model->setCreatedAt(new \DateTime());
+            if(!$model->createdAt) {
+                $model->setCreatedAt(new \DateTime());
+            }
         });
         $this->getEventsManager()->attach('model:beforeValidationOnUpdate',function(Event $event, $model){
             $model->setUpdatedAt(new \DateTime());
