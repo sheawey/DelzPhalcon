@@ -50,7 +50,7 @@ trait TTimestampable
      */
     public function setCreatedAt(\DateTime $createdAt = null)
     {
-        $this->createdAt = is_null($createdAt) ?? $createdAt->format('Y-m-d H:i:s');
+        $this->createdAt = $createdAt ?? $createdAt->format('Y-m-d H:i:s');
     }
 
     /**
@@ -58,7 +58,7 @@ trait TTimestampable
      */
     public function setUpdatedAt(\DateTime $updatedAt = null)
     {
-        $this->updatedAt = is_null($updatedAt) ?? $updatedAt->format('Y-m-d H:i:s');
+        $this->updatedAt = $updatedAt ?? $updatedAt->format('Y-m-d H:i:s');
     }
 
     /**
