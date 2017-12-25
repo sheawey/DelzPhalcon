@@ -50,10 +50,7 @@ trait TTimestampable
      */
     public function setCreatedAt(\DateTime $createdAt = null)
     {
-        if($createdAt === null) {
-            $this->createdAt = null;
-        }
-        $this->createdAt = $createdAt->format('Y-m-d H:i:s');
+        $this->createdAt = is_null($createdAt) ?? $createdAt->format('Y-m-d H:i:s');
     }
 
     /**
@@ -61,10 +58,7 @@ trait TTimestampable
      */
     public function setUpdatedAt(\DateTime $updatedAt = null)
     {
-        if($updatedAt === null) {
-            $this->updatedAt = null;
-        }
-        $this->updatedAt = $updatedAt->format('Y-m-d H:i:s');
+        $this->updatedAt = is_null($updatedAt) ?? $updatedAt->format('Y-m-d H:i:s');
     }
 
     /**
@@ -81,7 +75,9 @@ trait TTimestampable
             }
         });
         $this->getEventsManager()->attach('model:beforeValidationOnUpdate',function(Event $event, $model){
-            $model->setUpdatedAt(new \DateTime());
+            if(!$model->updatedAt) {
+                $model->setUpdatedAt(new \DateTime());
+            }
         });
     }
 }
