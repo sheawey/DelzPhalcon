@@ -39,7 +39,7 @@ trait TTimestampable
      */
     public function getUpdatedAt()
     {
-        if(!$this->updatedAt) {
+        if (!$this->updatedAt) {
             return null;
         }
         return new \DateTime($this->updatedAt);
@@ -50,7 +50,7 @@ trait TTimestampable
      */
     public function setCreatedAt(\DateTime $createdAt = null)
     {
-        $this->createdAt = $createdAt ?? $createdAt->format('Y-m-d H:i:s');
+        $this->createdAt = is_null($createdAt) ? null : $createdAt->format('Y-m-d H:i:s');
     }
 
     /**
@@ -58,7 +58,7 @@ trait TTimestampable
      */
     public function setUpdatedAt(\DateTime $updatedAt = null)
     {
-        $this->updatedAt = $updatedAt ?? $updatedAt->format('Y-m-d H:i:s');
+        $this->updatedAt = is_null($updatedAt) ? null : $updatedAt->format('Y-m-d H:i:s');
     }
 
     /**
@@ -66,16 +66,16 @@ trait TTimestampable
      */
     protected function __initTimestampable()
     {
-        if(!$this instanceof Model) {
+        if (!$this instanceof Model) {
             return;
         }
-        $this->getEventsManager()->attach('model:beforeValidationOnCreate',function(Event $event, $model){
-            if(!$model->createdAt) {
+        $this->getEventsManager()->attach('model:beforeValidationOnCreate', function (Event $event, $model) {
+            if (!$model->createdAt) {
                 $model->setCreatedAt(new \DateTime());
             }
         });
-        $this->getEventsManager()->attach('model:beforeValidationOnUpdate',function(Event $event, $model){
-            if(!$model->updatedAt) {
+        $this->getEventsManager()->attach('model:beforeValidationOnUpdate', function (Event $event, $model) {
+            if (!$model->updatedAt) {
                 $model->setUpdatedAt(new \DateTime());
             }
         });
